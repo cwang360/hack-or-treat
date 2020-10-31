@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "8592729151",
+    "firebase_url": "https://hackortreat-5438d.firebaseio.com",
+    "project_id": "hackortreat-5438d",
+    "storage_bucket": "hackortreat-5438d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:8592729151:android:5a80cb0c27d29d1febc48a",
+        "android_client_info": {
+          "package_name": "com.hot.hot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "8592729151-6eke7ri937j3q0bam72rkur9v16r5f2u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hot.hot",
+            "certificate_hash": "707b6b9371b69b1cb1d27d40c53982f4448b9bce"
+          }
+        },
+        {
+          "client_id": "8592729151-ueckfbplmaq0kk7ttsu58hgafg3p5kss.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDYkplTrvXvUTgORsG8LBKMi4aATpRp2H8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "8592729151-ek5umd9d9hiudvl4bupvg4vv98b4o8os.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
