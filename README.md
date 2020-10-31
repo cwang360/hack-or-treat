@@ -1,6 +1,6 @@
-# hot
+# Trick-or-Treat Near Me!
 
-An app that allows for users to trick or treat at at a distance.
+Web and mobile app that uses geolocation APIs for users to find locations near them that are giving out candy and instructions for socially-distanced trick-or-treating.
 
 ## Getting Started
 
