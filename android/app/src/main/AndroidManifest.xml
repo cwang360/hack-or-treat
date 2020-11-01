@@ -8,7 +8,7 @@
 
 
        <meta-data android:name="com.google.android.geo.API_KEY"
-           android:value="AIzaSyClKcvpi5C_GSpchGp0T6FMZIOOb0NlS8A"/>
+           android:value="INSERT API KEY HERE"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
