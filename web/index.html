@@ -40,6 +40,26 @@
       });
     }
   </script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.5.0/firebase-firestore.js"></script>
+
+  <script>
+    // TODO: Replace the following with your app's Firebase project configuration.
+    // See: https://support.google.com/firebase/answer/7015592
+    var firebaseConfig = {
+      apiKey: "...",
+      authDomain: "com.hot.hot.firebaseapp.com",
+      databaseURL: "https://com.hot.hot.firebaseio.com",
+      projectId: "com.hot.hot",
+      storageBucket: "com.hot.hot.appspot.com",
+      messagingSenderId: "...",
+      appId: "1:...:web:...",
+      measurementId: "G-..."
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

@@ -1,113 +1,414 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-void main() {
-  runApp(MyApp());
-}
+import 'package:geolocator/geolocator.dart';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:page_transition/page_transition.dart';
+import 'dart:ui';
+import 'package:google_fonts/google_fonts.dart';
+
+
+void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+      debugShowCheckedModeBanner: false,
+      //home: HomePage(),
+      initialRoute: HomePage.route,
+      routes: {
+        HomePage.route: (context) => HomePage(),
+        ToTMap.route: (context) => ToTMap(),
+        SetPage.route: (context) => SetPage(),
+      },
+    );
+  }
+}
+class HomePage extends StatelessWidget {
+  static const String route = '/';
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(0xff0e5361),//f3eac2
+      body: Stack(
+        children: <Widget>[
+          Container(
+            constraints: BoxConstraints.expand(),
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("../assets/clouds.jpg"),
+                  fit: BoxFit.cover),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+              child: Container(
+                color: Colors.black.withOpacity(0.5),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment(0, -0.4),
+            child: Image.asset('../assets/pumpkinicon.png', height: 120, width: 120),
+          ),
+          Align(
+            alignment: Alignment(0, -0.7),
+            child:Text(
+              'Trick-or-Treat Near Me!',
+              style: GoogleFonts.underdog(
+                textStyle:
+                  TextStyle(
+                    fontSize: 30,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                    
+                  )
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment(0, 0.1),
+            child: FlatButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(ToTMap.route);
+              },
+              child: Text(
+                'Find Locations',
+                style: GoogleFonts.underdog(
+                textStyle:
+                  TextStyle(
+                    fontSize: 20,
+                    color: Colors.orange,
+                    
+                  )
+              ),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment(0, 0.3),
+            child: FlatButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(SetPage.route);
+              },
+              child: Text(
+                'Set Location',
+                style: GoogleFonts.underdog(
+                textStyle:
+                  TextStyle(
+                    fontSize: 20,
+                    color: Colors.orange,
+                    
+                  )
+              ),
+              ),
+            ),
+          ),
+          
+        ]
+          
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+// class FindPage extends StatelessWidget{
+//   static const String route = '/find';
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Stack(
+//         children:[
+//           Align(
+//             alignment: Alignment(-0.95, 0.95),
+//             child: FlatButton(
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//               child: Text(
+//                 'Menu',
+//                 style: TextStyle(
+//                   color: Colors.orange,
+//                   fontSize: 20,
+//                 ),
+//               ),
+//             ),
+//           ),
+//         ]
+//       ),
+//     );
+//   }
+// }
+class SetPage extends StatefulWidget {
+  static const String route = '/set';
+  @override
+  _SetPage createState() => _SetPage();
+}
+class _SetPage extends State<SetPage>{
+  
+  final myController = TextEditingController();
+  final myController2 = TextEditingController();
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    myController.dispose();
+    myController2.dispose();
+    super.dispose();
+  }
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children:[
+          Align(
+            alignment: Alignment(0, -0.7),
+            child:Text(
+              'Set an Address for Trick-or-Treating!',
+              style: GoogleFonts.underdog(
+                textStyle:
+                  TextStyle(
+                    fontSize: 30,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.bold,
+                    
+                  )
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment(0, -0.3),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Address'
+                ),
+                controller: myController,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment(0, 0),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Message...any special instructions or types of candy?'
+                ),
+                controller: myController2,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment(-0.95, 0.95),
+            child: FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.orange,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ),
+        ]
+      ),
+      floatingActionButton: FloatingActionButton(
+        // When the user presses the button, show an alert dialog containing
+        // the text that the user has entered into the text field.
+        onPressed: () {
+          return showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                // Retrieve the text the that user has entered by using the
+                // TextEditingController.
+                title: Text('Thanks for Submitting!'),
+                content: SingleChildScrollView(
+                  child: ListBody(
+                    children: <Widget>[
+                      Text('Address:'),
+                      Text(myController.text),
+                      Text('Message:'),
+                      Text(myController2.text),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        tooltip: 'Show me the value!',
+        child: Icon(Icons.text_fields),
+      ),
+    );
+  }
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
+class ToTMap extends StatefulWidget {
+  static const String route = '/find';
+  @override
+  
+  State createState() => ToTMapState();
+}
+
+
+class ToTMapState extends State<ToTMap> {
+  
+  GoogleMapController mapController;
+  final Set<Marker> _markers = {};
+
+  // Position _currentPosition;
+  // String _currentAddress;
+  // final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
+  //
+  // _getCurrentLocation() {
+  //   geolocator
+  //       .getCurrentPosition(desiredAccuracy: LocationAccuracy.best)
+  //       .then((Position position) {
+  //     setState(() {
+  //       _currentPosition = position;
+  //     });
+  //     _getAddressFromLatLng();
+  //   }).catchError((e) {
+  //     print(e);
+  //   });
+  // }
+  //
+  // _getAddressFromLatLng() async {
+  //   try {
+  //     List<Placemark> p = await geolocator.placemarkFromCoordinates(
+  //         _currentPosition.latitude, _currentPosition.longitude);
+  //     Placemark place = p[0];
+  //     setState(() {
+  //       _currentAddress =
+  //       "${place.locality}, ${place.postalCode}, ${place.country}";
+  //     });
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  // }
+
+  Future<void> _animateToUser() async {
+    //_getCurrentLocation();
+
+    // mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+    //   bearing: 192,
+    //   target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
+    //   tilt: 59.44,
+    //   zoom: 11.0,
+    // )));
+    mapController.animateCamera(CameraUpdate.newCameraPosition(_samplePos));
+  }
+
+
+
+  void _onMapCreated(GoogleMapController controller) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      mapController = controller;
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+  void _updateCameraPosition(CameraPosition position) {
+    setState((){
+      _position = position;
+      _positionl = position.target;
+    });
+  }
+
+  _addMarker() {
+    var markerIdVal = _positionl.toString();
+    MarkerId markId = MarkerId(markerIdVal);
+    final Marker marker = Marker(
+        markerId: markId,
+        position: _positionl,
+        icon: BitmapDescriptor.defaultMarker,
+        infoWindow: InfoWindow(
+        title: "This is a title",
+        snippet: "🍄🍄🍄",
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+    _markers.add(marker);
+  }
+
+  static final CameraPosition _initial = CameraPosition(target: LatLng(24.150, -110.32), zoom: 10);
+  static final CameraPosition _samplePos = CameraPosition(
+    bearing: 192,
+    target: LatLng(33.748997, -84.387985),
+    tilt: 59.44,
+    zoom: 11.0,
+  );
+
+
+  CameraPosition _position = _initial;
+  LatLng _positionl = _initial.target;
+  MapType _currentMT = MapType.hybrid;
+
+  _onMapTypebuttonPressed(){
+    setState(() {
+      _currentMT = _currentMT == MapType.hybrid
+          ? MapType.normal : MapType.hybrid;
+    });
+  }
+
+  Widget button(Function function, IconData icon) {
+    return FloatingActionButton(
+        onPressed: function,
+        materialTapTargetSize: MaterialTapTargetSize.padded,
+        backgroundColor: Colors.deepPurple,
+        child: Icon(icon, size: 36.0)
+    );
+  }
+
+  @override
+  build(context) {
+     print("to map");
+    
+    return Stack(
+      
+        children: [
+          GoogleMap(
+              initialCameraPosition: _initial,
+              onMapCreated: _onMapCreated,
+              myLocationEnabled: true, // Add little blue dot for device location, requires permission from user
+              mapType: _currentMT,
+              markers: _markers,
+              onCameraMove: _updateCameraPosition,
+          ),
+
+          Align(
+              alignment: Alignment(1.0, 0.70),
+              child: button(_addMarker, Icons.pin_drop_outlined),
+          ),
+          Align(
+            alignment: Alignment(1.0, 0.5),
+            child: button(_onMapTypebuttonPressed, Icons.map),
+          ),
+          Align(
+            alignment: Alignment(1.0, 0.3),
+            child: button(_animateToUser, Icons.location_searching),
+          ),
+          Align(
+            alignment: Alignment(-0.95, 0.95),
+            child: FlatButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.orange,
+                  fontSize: 20,
+                  // fontFamily: 'JosefinSans',
+                  // fontStyle: FontStyle.italic,
+                ),
+              ),
+            ),
+          ),
+        ]
+    );
+    
   }
 }
