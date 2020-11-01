@@ -23,10 +23,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_google_places: ^0.2.6
   google_maps_flutter: ^1.0.5
   geoflutterfire: ^2.2.1
   geolocator: ^5.3.1
+  rflutter_alert: ^1.0.3
 
   firebase_core: ^0.5.1
   cloud_firestore: ^0.14.2
